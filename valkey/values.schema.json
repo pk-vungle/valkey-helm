@@ -22,6 +22,21 @@
                 }
             }
         },
+        "cluster": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "nodeTimeout": {
+                    "type": "integer"
+                },
+                "shards": {
+                    "type": "integer",
+                    "minimum": 3
+                }
+            }
+        },
         "clusterDomain": {
             "type": "string"
         },

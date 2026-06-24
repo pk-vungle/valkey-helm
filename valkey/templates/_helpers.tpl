@@ -178,6 +178,17 @@ Validate replica persistence configuration
 {{- end -}}
 
 {{/*
+Validate cluster configuration
+*/}}
+{{- define "valkey.validateClusterConfig" -}}
+{{- if .Values.cluster.enabled }}
+  {{- if lt (int .Values.cluster.shards) 3 }}
+    {{- fail "cluster.shards must be at least 3 for a valid Valkey cluster" }}
+  {{- end }}
+{{- end }}
+{{- end -}}
+
+{{/*
 Validate replica authentication configuration
 */}}
 {{- define "valkey.validateReplicaAuth" -}}

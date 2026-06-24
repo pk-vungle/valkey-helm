@@ -206,6 +206,13 @@ auth:
   # Example:
   # aclConfig: |
   #   user default on >secretpass ~* &* +@all
+# Cluster configuration
+cluster:
+  # Enable cluster mode (sharding across multiple nodes)
+  enabled: false
+
+  # Number of shards in the cluster (must be >= 3 for production)
+  shards: 3
 
 # Replica configuration for master-replica replication mode
 replica:

@@ -1,7 +1,11 @@
 {{- if .Values.replica.enabled }}
 {{- include "valkey.validateAuthConfig" . }}
+{{- if .Values.cluster.enabled }}
+{{- include "valkey.validateClusterConfig" . }}
+{{- else }}
 {{- include "valkey.validateReplicaPersistence" . }}
 {{- include "valkey.validateReplicaAuth" . }}
+{{- end }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -14,7 +18,7 @@ metadata:
   {{- end }}
 spec:
   serviceName: {{ include "valkey.fullname" . }}-headless
-  replicas: {{ add (int .Values.replica.replicas) 1 }}
+  replicas: {{ if .Values.cluster.enabled }}{{ int .Values.cluster.shards }}{{ else }}{{ add (int .Values.replica.replicas) 1 }}{{ end }}
   podManagementPolicy: OrderedReady
   {{- if .Values.replica.persistentVolumeClaimRetentionPolicy }}
   persistentVolumeClaimRetentionPolicy:

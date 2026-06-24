@@ -143,7 +143,20 @@ data:
     log "ACL file created with 0400 permissions"
     {{- end }}
 
-    {{- if .Values.replica.enabled }}
+    {{- if .Values.cluster.enabled }}
+    log "Configuring cluster mode"
+    {
+      echo ""
+      echo "# Cluster configuration"
+      echo "cluster-enabled yes"
+      echo "cluster-require-full-coverage yes"
+      echo "cluster-config-file /data/nodes.conf"
+      echo "cluster-node-timeout {{ .Values.cluster.nodeTimeout | default 5000 }}"
+      echo "cluster-announce-hostname $(hostname).{{ include "valkey.fullname" . }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}"
+    } >>"$VALKEY_CONFIG"
+    {{- end }}
+
+    {{- if and .Values.replica.enabled (not .Values.cluster.enabled) }}
     # Replica mode configuration
     log "Configuring replication mode"
 
