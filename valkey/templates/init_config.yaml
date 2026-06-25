@@ -149,7 +149,7 @@ data:
       echo ""
       echo "# Cluster configuration"
       echo "cluster-enabled yes"
-      echo "cluster-require-full-coverage yes"
+      echo "cluster-require-full-coverage no"
       echo "cluster-config-file /data/nodes.conf"
       echo "cluster-node-timeout {{ .Values.cluster.nodeTimeout | default 5000 }}"
       echo "cluster-announce-hostname $(hostname).{{ include "valkey.fullname" . }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}"

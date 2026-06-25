@@ -19,7 +19,7 @@ metadata:
 spec:
   serviceName: {{ include "valkey.fullname" . }}-headless
   replicas: {{ if .Values.cluster.enabled }}{{ int .Values.cluster.shards }}{{ else }}{{ add (int .Values.replica.replicas) 1 }}{{ end }}
-  podManagementPolicy: OrderedReady
+  podManagementPolicy: {{ if .Values.cluster.enabled }}Parallel{{ else }}OrderedReady{{ end }}
   {{- if .Values.replica.persistentVolumeClaimRetentionPolicy }}
   persistentVolumeClaimRetentionPolicy:
     {{- toYaml .Values.replica.persistentVolumeClaimRetentionPolicy | nindent 4 }}

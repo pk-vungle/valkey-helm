@@ -15,6 +15,12 @@ spec:
       port: {{ .Values.service.port }}
       targetPort: tcp
       protocol: TCP
+    {{- if .Values.cluster.enabled }}
+    - name: cluster-bus
+      port: {{ add (int .Values.service.port) 10000 }}
+      targetPort: {{ add (int .Values.service.port) 10000 }}
+      protocol: TCP
+    {{- end }}
   selector:
     {{- include "valkey.selectorLabels" . | nindent 4 }}
 {{- end }}
