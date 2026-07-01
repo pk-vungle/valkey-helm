@@ -151,13 +151,13 @@ spec:
               {{- else }}
               command: [ "sh", "-c", "valkey-cli ping" ]
               {{- end }}
+            periodSeconds: 5
+            failureThreshold: 60
           livenessProbe:
-            exec:
-              {{- if .Values.tls.enabled }}
-              command: [ "sh", "-c", "valkey-cli --cacert /tls/{{ .Values.tls.caPublicKey }} --tls ping" ]
-              {{- else }}
-              command: [ "sh", "-c", "valkey-cli ping" ]
-              {{- end }}
+            tcpSocket:
+              port: tcp
+            periodSeconds: 10
+            failureThreshold: 6
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
